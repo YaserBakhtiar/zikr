@@ -7,238 +7,151 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="512x512" href="/zikr/icon.png">
 <link rel="apple-touch-icon" href="/zikr/icon.png">
-<meta name="theme-color" content="#0e4a4f" id="themeColor">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta name="theme-color" content="#eef3f2" id="tcol">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-@font-face{font-family:'Uthman Taha';src:url('/zikr/fonts/UthmanTahaNaskhBold.ttf') format('truetype');font-weight:bold;font-display:swap}
-@font-face{font-family:'Lotus';src:url('/zikr/fonts/lotus-Bold.ttf') format('truetype');font-weight:bold;font-display:swap}
-@font-face{font-family:'Compset';src:url('/zikr/fonts/Compset-Bold.ttf') format('truetype');font-weight:bold;font-display:swap}
-
-/* ===== Design tokens: parchment-stone + deep teal + gold leaf ===== */
-:root{
---bg:#e9ede6;--bg-glow:rgba(14,74,79,.10);
---ink:#0d2f33;--ink-soft:#586f70;
---surface:rgba(250,251,247,.86);--surface-solid:#fafbf7;--sunken:#e2e8e1;
---line:rgba(13,47,51,.12);--line-strong:rgba(13,47,51,.22);
---accent:#0e5a5e;--accent-2:#14787a;--on-accent:#fff;
---gold:#b8923d;--gold-soft:rgba(184,146,61,.16);
---ok:#12795a;--ok-soft:rgba(18,121,90,.13);
---shadow:0 1px 2px rgba(13,47,51,.06),0 10px 28px -12px rgba(13,47,51,.22);
---shadow-lg:0 24px 60px -20px rgba(13,47,51,.35);
---r-lg:28px;--r-md:18px;--safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
---selected-font:'Uthman Taha','Lotus','Compset','Amiri',serif;--selected-font-size:1.5rem;
---ease:cubic-bezier(.22,.8,.3,1)}
-body.dark{
---bg:#061a1c;--bg-glow:rgba(30,150,150,.14);
---ink:#eef1e6;--ink-soft:#93aeab;
---surface:rgba(14,40,43,.78);--surface-solid:#0e282b;--sunken:#0a2123;
---line:rgba(238,241,230,.10);--line-strong:rgba(238,241,230,.22);
---accent:#3fb7ad;--accent-2:#2a9d96;--on-accent:#04201f;
---gold:#d9b560;--gold-soft:rgba(217,181,96,.16);
---ok:#4cd3a0;--ok-soft:rgba(76,211,160,.14);
---shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px -12px rgba(0,0,0,.6);
---shadow-lg:0 24px 60px -20px rgba(0,0,0,.8)}
-
-/* ===== Base ===== */
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;padding:0}
-body{font-family:'Vazirmatn',sans-serif;color:var(--ink);overflow:hidden;display:flex;flex-direction:column;
-background:radial-gradient(90% 55% at 50% -10%,var(--bg-glow),transparent 70%),var(--bg);transition:background-color .3s,color .3s}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.7;
-background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><g fill='none' stroke='%23b8923d' stroke-opacity='.16'><rect x='16' y='16' width='32' height='32'/><rect x='16' y='16' width='32' height='32' transform='rotate(45 32 32)'/></g></svg>");
--webkit-mask-image:linear-gradient(#000,transparent 60%);mask-image:linear-gradient(#000,transparent 60%)}
-[dir="ltr"] body{font-family:'Segoe UI','Vazirmatn',sans-serif}
-button{font-family:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:12px}
-.app-container{position:relative;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden}
-
-/* ===== Settings ===== */
-.settings-float{position:absolute;z-index:100;top:calc(var(--safe-top) + .75rem);inset-inline-end:1rem;width:44px;height:44px;
-display:grid;place-items:center;font-size:1.1rem;color:var(--accent);cursor:pointer;padding:0;
-background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);transition:transform .25s var(--ease)}
-.settings-float i{transition:transform .5s var(--ease)}
-.settings-float:hover i{transform:rotate(90deg)}
-.settings-float:active{transform:scale(.94)}
-.settings-panel{position:absolute;z-index:200;top:calc(var(--safe-top) + 4.2rem);inset-inline-end:1rem;width:min(320px,calc(100% - 2rem));
-background:var(--surface-solid);border:1px solid var(--line);border-radius:var(--r-lg);padding:.5rem 1.1rem;box-shadow:var(--shadow-lg);display:none}
-.settings-panel.show{display:block;animation:pop .22s var(--ease)}
-@keyframes pop{from{opacity:0;transform:translateY(-8px) scale(.97)}to{opacity:1;transform:none}}
-.setting-item{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--line)}
-.setting-item:last-child{border-bottom:0}
-.setting-label{display:flex;align-items:center;gap:.65rem;font-size:.95rem;font-weight:500}
-.setting-label i{width:1.5rem;text-align:center;color:var(--gold)}
-.select-wrapper{position:relative;width:140px}
-.custom-select{width:100%;height:40px;background-color:var(--sunken);border:1px solid var(--line);border-radius:12px;padding:0 2.2rem 0 .8rem;color:var(--ink);font-size:.88rem;cursor:pointer;appearance:none;-webkit-appearance:none;
-background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b8923d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-background-repeat:no-repeat;background-position:left 10px center;padding-left:2.2rem;padding-right:.8rem}
-[dir="ltr"] .custom-select{background-position:right 10px center;padding-right:2.2rem;padding-left:.8rem}
-.inner-switch{width:50px;height:28px;padding:0;border:0;border-radius:30px;background:var(--line-strong);position:relative;cursor:pointer;transition:background .25s}
-.inner-switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .25s var(--ease)}
-.inner-switch.active{background:var(--accent)}
-.inner-switch.active::after{left:calc(100% - 25px)}
-.font-size-control{display:flex;align-items:center;gap:.35rem}
-.font-size-btn{width:34px;height:34px;display:grid;place-items:center;padding:0;border:1px solid var(--line);border-radius:11px;background:var(--sunken);font-size:1.15rem;cursor:pointer;transition:background .2s,transform .15s}
-.font-size-btn:hover{background:var(--gold-soft)}
-.font-size-btn:active{transform:scale(.9)}
-.font-size-value{min-width:38px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
-.install-btn,.download-audio-btn,.modal-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);border:0;cursor:pointer}
-.install-btn{border-radius:12px;padding:.5rem .95rem;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:.4rem}
-.hidden-btn{display:none!important}
-
-/* ===== Home ===== */
-.main-content{flex:1;display:flex;flex-direction:column;min-height:0;position:relative}
-.main-menu{flex:1;display:flex;flex-direction:column;overflow-y:auto;padding:calc(var(--safe-top) + 4.5rem) max(1.25rem,calc((100% - 880px)/2)) 0}
-.menu-center{flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:1.5rem}
-.main-menu .app-title{font-family:'Uthman Taha','Lotus','Amiri',serif;font-size:clamp(3rem,13vw,4.4rem);font-weight:bold;line-height:1.3;text-align:center;margin:0 0 2.2rem;
-background:linear-gradient(180deg,var(--ink) 30%,var(--accent));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.main-menu .app-title::after{content:"";display:block;width:84px;height:2px;margin:.4rem auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;width:100%;max-width:460px;margin:0 auto}
-.menu-card{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1.6rem .8rem 1.3rem;text-align:center;cursor:pointer;
-background:var(--surface);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
-.menu-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:var(--shadow-lg)}
-.menu-card:active{transform:scale(.97)}
-.menu-info h2{margin:0;font-size:1.05rem;font-weight:700;line-height:1.5}
-/* mihrab-arch icon tiles: the one memorable shape */
-.menu-icon{width:72px;height:84px;display:grid;place-items:center;font-size:1.7rem;color:#fff;border-radius:36px 36px 14px 14px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.18),0 10px 20px -8px rgba(13,47,51,.45)}
-[data-category="morning"] .menu-icon{background:linear-gradient(160deg,#e3b44e,#c27a22)}
-[data-category="evening"] .menu-icon{background:linear-gradient(160deg,#4a62b8,#27337a)}
-[data-category="sleep"] .menu-icon{background:linear-gradient(160deg,#2a9a8e,#0e5a5e)}
-[data-category="audio"] .menu-icon{background:linear-gradient(160deg,#a35a6a,#6a2f45)}
-@media(min-width:760px){.menu-grid{max-width:880px;grid-template-columns:repeat(4,1fr);gap:1.25rem}.menu-card{padding:2rem 1rem 1.6rem}}
-
-/* ===== Detail header ===== */
-.detail-header{display:none;align-items:center;gap:.9rem;position:sticky;top:0;z-index:50;
-padding:calc(var(--safe-top) + .75rem) 4.5rem .75rem max(1rem,calc((100% - 720px)/2 + 1rem));
-background:var(--surface);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
-[dir="ltr"] .detail-header{padding:calc(var(--safe-top) + .75rem) max(1rem,calc((100% - 720px)/2 + 1rem)) .75rem 4.5rem}
-.detail-header.active{display:flex;animation:pop .3s var(--ease)}
-.detail-header .back-btn{width:44px;height:44px;display:grid;place-items:center;padding:0;font-size:1rem;color:var(--accent);cursor:pointer;background:var(--sunken);border:1px solid var(--line);border-radius:14px;transition:transform .2s}
-[dir="ltr"] .back-btn i{transform:scaleX(-1)}
-.detail-header .back-btn:active{transform:scale(.92)}
-.detail-header .page-title{flex:1;margin:0;font-size:1.2rem;font-weight:700}
-.detail-view{min-height:0;flex:1}
-
-/* ===== Dhikr cards: manuscript page with inner gold frame ===== */
-.dhikr-list{flex:1;overflow-y:auto;padding:1rem max(1rem,calc((100% - 720px)/2)) calc(2rem + var(--safe-bot));counter-reset:d;scrollbar-width:thin}
-.dhikr-card{position:relative;counter-increment:d;margin-bottom:1rem;padding:2.6rem 1.25rem 1.2rem;background:var(--surface-solid);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
-.dhikr-card::after{content:"";position:absolute;inset:7px;border:1px solid var(--gold-soft);border-radius:21px;pointer-events:none}
-.dhikr-card::before{content:counter(d);position:absolute;top:0;inset-inline-start:50%;transform:translate(-50%,-50%);min-width:34px;height:34px;padding:0 .5rem;display:grid;place-items:center;
-font-size:.85rem;font-weight:700;color:var(--gold);background:var(--surface-solid);border:1px solid var(--gold);border-radius:12px;font-variant-numeric:tabular-nums}
-.dhikr-text{font-family:var(--selected-font);font-weight:bold;font-size:var(--selected-font-size);line-height:2;text-align:center;margin-bottom:1.2rem}
-.dhikr-meta{display:flex;flex-direction:column;align-items:center;gap:.8rem;border-top:1px dashed var(--line-strong);padding-top:1rem}
-.reference{display:inline-flex;align-items:center;gap:.4rem;max-width:100%;padding:.25rem .8rem;font-size:.72rem;line-height:1.7;color:var(--ink-soft);background:var(--sunken);border-radius:30px;direction:ltr;text-align:center}
-[dir="rtl"] .reference{direction:rtl}
-.repeat-badge,.completed-badge{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;width:100%;max-width:340px;min-height:52px;padding:.5rem 1.5rem;border:0;border-radius:16px;font-size:1rem;font-weight:700;user-select:none;-webkit-user-select:none}
-.repeat-badge{cursor:pointer;color:var(--on-accent);background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 8px 18px -8px var(--accent);transition:transform .15s var(--ease),filter .2s}
-.repeat-badge:hover{filter:brightness(1.08)}
-.repeat-badge:active{transform:scale(.96)}
-.completed-badge{color:var(--ok);background:var(--ok-soft);border:1px solid var(--ok);pointer-events:none;transition:transform .2s}
-
-/* ===== Audio ===== */
-.audio-detail{flex:1;overflow-y:auto;padding:1rem max(1rem,calc((100% - 720px)/2)) calc(2rem + var(--safe-bot))}
-.audio-card{margin-bottom:1rem;padding:1.2rem;background:var(--surface-solid);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
-.audio-title{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;font-size:1.1rem;font-weight:700}
-.audio-title i{color:var(--gold)}
-.custom-audio-player{display:flex;align-items:center;gap:.9rem;direction:ltr;padding:.5rem .9rem .5rem .5rem;background:var(--sunken);border-radius:40px}
-.play-btn{flex-shrink:0;width:44px;height:44px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;font-size:1rem;color:var(--on-accent);cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 6px 14px -6px var(--accent);transition:transform .15s}
-.play-btn:active{transform:scale(.92)}
-.progress-area{flex:1;display:flex;align-items:center;gap:.6rem;min-width:0}
-.time{min-width:42px;text-align:center;font-size:.78rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-.progress-bar{flex:1;height:6px;border-radius:10px;background:var(--line-strong);cursor:pointer;position:relative}
-.progress-bar::after{content:"";position:absolute;inset:-12px 0}
-.progress-fill{height:100%;width:0;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--gold))}
-audio{display:none}
-.download-audio-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:.6rem;min-height:50px;padding:.6rem 1rem;border-radius:16px;font-size:.92rem;font-weight:600;line-height:1.6;transition:transform .15s}
-.download-audio-btn:active{transform:scale(.97)}
-
-/* ===== Footer ===== */
-.footer{flex-shrink:0;text-align:center;padding:.9rem 1rem calc(.9rem + var(--safe-bot))}
-.footer.hidden{display:none}
-.telegram-link{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem 1rem;font-size:.85rem;font-weight:500;color:var(--ink-soft);text-decoration:none;border:1px solid var(--line);border-radius:30px;transition:color .2s,border-color .2s}
-.telegram-link:hover{color:var(--accent);border-color:var(--accent)}
-.telegram-svg{width:20px;height:20px;fill:currentColor}
-
-/* ===== Modals (bottom sheet on mobile) ===== */
-.modal-overlay{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(3,18,20,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.modal-overlay.show{display:flex;animation:fade .25s ease}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-.modal-card{width:90%;max-width:400px;padding:2rem 1.5rem 1.5rem;text-align:center;background:var(--surface-solid);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-lg);animation:up .3s var(--ease)}
-@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.modal-icon{width:60px;height:68px;margin:0 auto 1rem;display:grid;place-items:center;font-size:1.5rem;color:var(--gold);background:var(--gold-soft);border-radius:30px 30px 12px 12px}
-.modal-title{font-size:1.2rem;font-weight:700;margin-bottom:.4rem}
-.modal-message{font-size:.92rem;line-height:1.9;color:var(--ink-soft)}
-.modal-actions{display:flex;justify-content:center;gap:.7rem;margin-top:1.4rem}
-.modal-btn{flex:1;max-width:170px;min-height:46px;padding:.6rem 1.2rem;border:1px solid var(--line);border-radius:14px;font-size:.95rem;font-weight:600;cursor:pointer;background:var(--sunken);color:var(--ink);transition:transform .15s}
-.modal-btn:active{transform:scale(.95)}
-.modal-btn.primary{border:0}
-.lang-buttons{display:flex;flex-direction:column;gap:.7rem;margin:1.4rem 0 .4rem}
-.lang-btn{display:flex;align-items:center;justify-content:center;gap:.8rem;min-height:52px;padding:.6rem;font-size:1.1rem;font-weight:600;cursor:pointer;background:var(--sunken);border:1px solid var(--line);border-radius:16px;transition:border-color .2s,background .2s,transform .15s}
-.lang-btn:hover{border-color:var(--gold);background:var(--gold-soft)}
-.lang-btn:active{transform:scale(.97)}
-.lang-btn i{color:var(--gold)}
-.progress-modal .modal-card{max-width:350px}
-.progress-bar-container{height:8px;margin:1rem 0;border-radius:10px;overflow:hidden;background:var(--line-strong)}
-.progress-fill-bar{height:100%;width:0;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .2s}
-.progress-percent{margin:.4rem 0;font-size:1.3rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
-.download-progress-text{font-size:.88rem;color:var(--ink-soft)}
-@media(max-width:520px){
-.modal-overlay{align-items:flex-end}
-.modal-card{width:100%;max-width:none;border-radius:var(--r-lg) var(--r-lg) 0 0;padding-bottom:calc(1.5rem + var(--safe-bot))}
-.progress-modal .modal-card{max-width:none}}
-
-/* ===== Loading ===== */
-.loading-spinner{display:inline-block;width:40px;height:40px;border:3px solid var(--line-strong);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@font-face {
+font-family: 'Uthman Taha';
+src: url('/zikr/fonts/UthmanTahaNaskhBold.ttf') format('truetype');
+font-weight: bold;
+font-display: swap;
+}
+@font-face {
+font-family: 'Lotus';
+src: url('/zikr/fonts/lotus-Bold.ttf') format('truetype');
+font-weight: bold;
+font-display: swap;
+}
+@font-face {
+font-family: 'Compset';
+src: url('/zikr/fonts/Compset-Bold.ttf') format('truetype');
+font-weight: bold;
+font-display: swap;
+}
+:root{--ui:'Vazirmatn',system-ui,sans-serif;--f:var(--selected-font,'Uthman Taha','Amiri',serif);--fs:var(--selected-font-size,1.5rem);
+--bg:#eef3f2;--surf:#fff;--ink:#0d2b30;--mute:#5d7378;--line:#d9e3e2;--acc:#c8246a;--ok:#12806a;--sh:0 10px 28px -16px rgba(13,43,48,.35)}
+body.dark{--bg:#0a1220;--surf:#121c31;--ink:#e9eff1;--mute:#93a6b0;--line:#23324d;--acc:#ff5b9a;--ok:#4cd1ad;--sh:none}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+body{font-family:var(--ui);background:var(--bg);color:var(--ink);min-height:100vh;transition:background .3s}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.i{width:22px;height:22px;flex:none}
+.view{display:none;max-width:640px;margin:auto;padding:max(14px,env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom))}
+.view.on{display:block}
+/* hero */
+.hero{--s1:#0a1230;--s2:#1d2c5e;--s3:#3b4b86;position:relative;height:270px;border-radius:32px;overflow:hidden;color:#fff;background:linear-gradient(var(--s1),var(--s2) 62%,var(--s3))}
+.hero[data-sky=morning]{--s1:#23707f;--s2:#78b3a2;--s3:#f3bd68}
+.hero[data-sky=day]{--s1:#15649b;--s2:#4fa6cf;--s3:#a5dcec}
+.hero[data-sky=evening]{--s1:#2a2a66;--s2:#c24f6c;--s3:#f5a95a}
+.stars{position:absolute;inset:0;opacity:0;transition:opacity 1s;background-image:radial-gradient(1.5px 1.5px at 18% 30%,#fff,transparent),radial-gradient(1px 1px at 68% 18%,#fff,transparent),radial-gradient(1.5px 1.5px at 86% 46%,#fff,transparent),radial-gradient(1px 1px at 42% 42%,#fff,transparent),radial-gradient(1px 1px at 8% 56%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 12%,#fff,transparent)}
+.hero[data-sky=night] .stars{opacity:1}
+.orb{position:absolute;width:58px;height:58px;border-radius:50%;transform:translate(-50%,-50%);left:50%;top:115%;background:radial-gradient(circle at 35% 35%,#fff8d8,#ffd267);box-shadow:0 0 70px 24px rgba(255,210,103,.45);transition:top 1.6s cubic-bezier(.2,.8,.2,1),left 1.6s cubic-bezier(.2,.8,.2,1)}
+.orb.moon{background:radial-gradient(circle at 38% 36%,#fff,#d9deef);box-shadow:0 0 50px 12px rgba(190,205,255,.35)}
+.hz{position:absolute;left:-20%;right:-20%;bottom:-46px;height:92px;background:var(--bg);border-radius:50%;transition:background .3s}
+.ht{position:absolute;inset:26px 24px auto;display:flex;flex-direction:column;gap:2px}
+.ht p{opacity:.9;font-size:.95rem}
+.ht h1{font-family:var(--f);font-size:clamp(2.6rem,12vw,3.7rem);line-height:1.35;font-weight:700}
+html[lang=en] .ht h1{font-family:var(--ui);font-weight:800;letter-spacing:-.02em}
+.gear{position:absolute;top:16px;inset-inline-end:16px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);color:#fff}
+.ht{padding-inline-end:48px}
+/* home rows */
+#rows{margin-top:6px}
+.row{display:flex;align-items:center;gap:14px;width:100%;padding:13px 16px;margin-bottom:10px;background:var(--surf);border:1px solid var(--line);border-radius:22px;text-align:start;box-shadow:var(--sh);transition:transform .15s}
+.row:active{transform:scale(.98)}
+.row.now{border-color:var(--acc)}
+.row[data-k=morning]{--c:#d08a0d}.row[data-k=evening]{--c:#7d5ad6}.row[data-k=sleep]{--c:#3a6fd8}.row[data-k=audio]{--c:var(--acc)}
+.ic{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.rt{flex:1;display:flex;flex-direction:column;gap:2px}
+.rt b{font-size:1.08rem;font-weight:700}.rt small{color:var(--mute);font-size:.82rem}
+.row em{font-style:normal;font-size:.75rem;font-weight:700;color:#fff;background:var(--acc);padding:2px 10px;border-radius:99px}
+.rg{width:44px;height:44px;display:grid;place-items:center;color:var(--acc)}
+.ring{width:100%;height:100%;transform:rotate(-90deg)}
+.rb,.rf{fill:none;stroke-width:4}.rb{stroke:var(--line)}.rf{stroke:var(--acc);stroke-linecap:round;transition:stroke-dashoffset .35s}
+.tg{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;color:var(--mute);font-size:.88rem;text-decoration:none}
+.tg svg{width:18px;height:18px}
+/* top bar */
+#bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;max-width:640px;margin:auto;padding:max(10px,env(safe-area-inset-top)) 14px 12px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px)}
+#bar button{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--surf);border:1px solid var(--line)}
+html[dir=ltr] .bk svg{transform:scaleX(-1)}
+#bt{flex:1;font-size:1.15rem;font-weight:700}
+#bc{color:var(--mute);font-size:.9rem;font-variant-numeric:tabular-nums}
+#bar .trk{position:absolute;inset-inline:14px;bottom:0;height:3px;border-radius:3px;background:var(--line)}
+#bp{display:block;height:100%;width:0;border-radius:3px;background:var(--acc);transition:width .35s}
+/* cards */
+.card{background:var(--surf);border:1px solid var(--line);border-radius:24px;padding:22px 18px 14px;margin-bottom:14px;box-shadow:var(--sh);cursor:pointer;transition:opacity .3s,transform .15s;user-select:text}
+.card:not(.done):active{transform:scale(.992)}
+.card.done{opacity:.5;cursor:default}
+.tx{font-family:var(--f);font-size:var(--fs);line-height:2.1;text-align:justify;text-align-last:center}
+.card footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.ref{display:flex;align-items:center;gap:7px;color:var(--mute);font-size:.8rem;line-height:1.6}.ref .i{width:16px;height:16px}
+.cb{position:relative;flex:none;width:54px;height:54px;display:grid;place-items:center;color:var(--acc)}
+.cb .ring{position:absolute;inset:0}.cb b{font-size:1.05rem;font-variant-numeric:tabular-nums}
+.cb.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent);border-radius:50%}
+.pop{animation:pop .22s}@keyframes pop{50%{transform:scale(1.15)}}
+/* audio */
+.ac{background:var(--surf);border:1px solid var(--line);border-radius:24px;padding:18px;margin-bottom:14px;box-shadow:var(--sh)}
+.at{display:flex;align-items:center;gap:10px;font-weight:700;margin-bottom:14px}
+.pr{display:flex;align-items:center;gap:14px}
+.pb{width:58px;height:58px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--acc);color:#fff}
+.pa{flex:1;display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--mute);font-variant-numeric:tabular-nums}
+.bar2{flex:1;padding:12px 0;cursor:pointer}.bar2 div{height:6px;border-radius:6px;background:var(--line)}.bar2 i{display:block;height:100%;width:0;border-radius:6px;background:var(--acc)}
+.dl{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:99px;border:1.5px solid var(--acc);color:var(--acc);font-weight:700;font-size:.9rem}
+/* overlays */
+.ov{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;justify-content:center;background:rgba(5,10,22,.58)}
+.ov.show{display:flex}.ov.c{align-items:center;padding:20px}
+.sh,.md{background:var(--surf);width:100%;max-width:440px;animation:up .28s ease-out}
+.sh{max-width:640px;border-radius:28px 28px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom))}
+.md{border-radius:26px;padding:26px 22px 20px;text-align:center}
+@keyframes up{from{transform:translateY(24px);opacity:0}}
+.rs{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-weight:500}
+.rs:last-child{border:0}
+.seg{display:flex;background:var(--bg);border-radius:99px;padding:3px;gap:2px}
+.seg button{padding:7px 12px;border-radius:99px;font-size:.84rem}
+.seg button.on{background:var(--acc);color:#fff;font-weight:700}
+.step{display:flex;align-items:center;gap:6px}.step button{width:36px;height:36px;border-radius:50%;background:var(--bg);font-size:1.2rem}.step b{min-width:2.2em;text-align:center}
+.sw{width:52px;height:30px;border-radius:99px;background:var(--line);position:relative;transition:.2s}
+.sw::after{content:'';position:absolute;top:3px;inset-inline-start:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw[aria-checked=true]{background:var(--acc)}.sw[aria-checked=true]::after{inset-inline-start:25px}
+.pill{padding:8px 18px;border-radius:99px;background:var(--acc);color:#fff;font-weight:700}
+.md h3{font-size:1.15rem;margin-bottom:6px}.md p{color:var(--mute);font-size:.92rem;line-height:1.8}
+.ma{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.ma button{padding:12px;border-radius:99px;background:var(--bg);font-weight:700}.ma button.p{background:var(--acc);color:#fff}
+.pbar{height:8px;border-radius:8px;background:var(--line);margin-top:16px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:var(--acc);transition:width .3s}
+#toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:60;background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:99px;font-size:.9rem;font-weight:500;transition:.3s;max-width:90%;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="app-container" id="appContainer">
-<button type="button" class="settings-float" id="settingsIcon" aria-label="Settings"><i class="fas fa-cog"></i></button>
-<div class="settings-panel" id="settingsPanel">
-<div class="setting-item">
-<span class="setting-label"><i class="fas fa-globe"></i> <span data-i18n="language">اللغة</span></span>
-<div class="select-wrapper"><select class="custom-select" id="languageSelect"><option value="fa">فارسی</option><option value="ar" selected>العربية</option><option value="en">English</option></select></div>
-</div>
-<div class="setting-item">
-<span class="setting-label"><i class="fas fa-moon"></i> <span data-i18n="darkMode">الوضع الليلي</span></span>
-<button type="button" class="inner-switch" id="themeSwitchInner" aria-label="Dark mode"></button>
-</div>
-<div class="setting-item">
-<span class="setting-label"><i class="fas fa-text-height"></i> <span data-i18n="fontSize">حجم الخط</span></span>
-<div class="font-size-control"><button type="button" class="font-size-btn" id="decreaseFont" aria-label="−">−</button><span class="font-size-value" id="fontSizeValue">1.5</span><button type="button" class="font-size-btn" id="increaseFont" aria-label="+">+</button></div>
-</div>
-<div class="setting-item">
-<span class="setting-label"><i class="fas fa-font"></i> <span data-i18n="font">الخط</span></span>
-<div class="select-wrapper"><select class="custom-select" id="fontSelect"><option value="Uthman">عثمان طه</option><option value="Lotus">لوتوس</option><option value="Compset">كومبست</option></select></div>
-</div>
-<div class="setting-item" id="installButtonContainer" style="display: none;">
-<span class="setting-label"><i class="fas fa-download"></i> <span data-i18n="installApp">تثبيت التطبيق</span></span>
-<button class="install-btn" id="installBtn"><i class="fas fa-arrow-down"></i> <span data-i18n="install">تثبيت</span></button>
-</div>
-</div>
-<div class="detail-header" id="detailHeader"><button type="button" class="back-btn" id="backBtn" aria-label="Back"><i class="fas fa-arrow-right"></i></button><span class="page-title" id="detailPageTitle"></span></div>
-<div class="main-content" id="mainContent">
-<div id="mainMenu" class="main-menu"><div class="menu-center"><div class="app-title" id="mainAppTitle">الأذكار</div><div class="menu-grid"><div class="menu-card" role="button" tabindex="0" data-category="morning"><div class="menu-icon"><i class="fas fa-sun"></i></div><div class="menu-info"><h2 data-i18n="morningAdhkar">أذكار الصباح</h2></div></div><div class="menu-card" role="button" tabindex="0" data-category="evening"><div class="menu-icon"><i class="fas fa-moon"></i></div><div class="menu-info"><h2 data-i18n="eveningAdhkar">أذكار المساء</h2></div></div><div class="menu-card" role="button" tabindex="0" data-category="sleep"><div class="menu-icon"><i class="fas fa-bed"></i></div><div class="menu-info"><h2 data-i18n="sleepAdhkar">أذكار النوم</h2></div></div><div class="menu-card" role="button" tabindex="0" data-category="audio"><div class="menu-icon"><i class="fas fa-headphones"></i></div><div class="menu-info"><h2 data-i18n="audioAdhkar">الأذكار الصوتية</h2></div></div></div></div><div class="footer" id="footer"><a href="https://t.me/YBAKHTIAR" target="_blank" class="telegram-link"><svg class="telegram-svg" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.87 4.326-2.96-.924c-.643-.2-.658-.643.135-.953l11.56-4.456c.537-.2 1.006.133.832.936z"/></svg><span data-i18n="feedback">آراء واقتراحات</span></a></div></div>
-<div id="detailView" class="detail-view" style="display: none; height: 100%; flex-direction: column;"><div id="detailList" class="dhikr-list"></div></div>
-<div id="audioDetailView" class="detail-view" style="display: none; height: 100%; flex-direction: column;"><div class="audio-detail"><div class="audio-card"><div class="audio-title"><i class="fas fa-sun"></i> <span data-i18n="morningAudio">أذكار الصباح</span></div><div class="custom-audio-player" data-audio="morning"><button class="play-btn" data-id="morning"><i class="fas fa-play"></i></button><div class="progress-area"><span class="time" data-current="morning">00:00</span><div class="progress-bar" data-progress="morning"><div class="progress-fill" data-fill="morning"></div></div><span class="time" data-duration="morning">00:00</span></div></div></div><div class="audio-card"><div class="audio-title"><i class="fas fa-moon"></i> <span data-i18n="eveningAudio">أذكار المساء</span></div><div class="custom-audio-player" data-audio="evening"><button class="play-btn" data-id="evening"><i class="fas fa-play"></i></button><div class="progress-area"><span class="time" data-current="evening">00:00</span><div class="progress-bar" data-progress="evening"><div class="progress-fill" data-fill="evening"></div></div><span class="time" data-duration="evening">00:00</span></div></div></div><button class="download-audio-btn" id="downloadAudioBtn"><i class="fas fa-download"></i> <span data-i18n="downloadAudio">تحميل الملفات الصوتية للاستخدام دون اتصال (20 MB)</span></button></div><audio id="audioMorning" preload="none" src="https://raw.githubusercontent.com/ysrbkht/zikr/main/morning.mp3"></audio><audio id="audioEvening" preload="none" src="https://raw.githubusercontent.com/ysrbkht/zikr/main/evening.mp3"></audio></div>
-</div>
-<div class="modal-overlay" id="customModal"><div class="modal-card"><div class="modal-icon" id="modalIcon"><i class="fas fa-cloud-download-alt"></i></div><div class="modal-title" id="modalTitle"></div><div class="modal-message" id="modalMessage"></div><div class="modal-actions" id="modalActions"></div></div></div>
-<div class="modal-overlay" id="progressModal"><div class="modal-card progress-modal"><div class="modal-icon"><i class="fas fa-download"></i></div><div class="modal-title" id="progressTitle">جاري التحميل...</div><div class="progress-bar-container"><div class="progress-fill-bar" id="progressFill"></div></div><div class="progress-percent" id="progressPercent">0%</div><div class="download-progress-text" id="progressDetail">0 / 2 ملف</div><div class="modal-actions"><button class="modal-btn" id="cancelDownloadBtn">إلغاء</button></div></div></div>
-<!-- مودال انتخاب زبان در اولین بازدید -->
-<div class="modal-overlay" id="languageModal"><div class="modal-card"><div class="modal-icon"><i class="fas fa-language"></i></div><div class="modal-title" id="languageModalTitle">اختر اللغة</div><div class="modal-message" id="languageModalMessage">يرجى اختيار اللغة المفضلة</div><div class="lang-buttons"><button class="lang-btn" data-lang="ar"><i class="fas fa-flag"></i> العربية</button><button class="lang-btn" data-lang="fa"><i class="fas fa-flag"></i> فارسی</button><button class="lang-btn" data-lang="en"><i class="fas fa-flag"></i> English</button></div></div></div>
-</div>
+<header id="bar" hidden><button class="bk" id="back" aria-label="back"></button><h2 id="bt"></h2><span id="bc"></span><div class="trk"><i id="bp"></i></div></header>
+
+<main id="home" class="view on">
+<section class="hero" id="hero"><div class="stars"></div><div class="orb" id="orb"></div><div class="hz"></div>
+<div class="ht"><p id="greet"></p><h1 id="appTitle"></h1></div>
+<button class="gear" id="gear" aria-label="settings"></button></section>
+<div id="rows"></div>
+<a class="tg" href="https://t.me/YBAKHTIAR" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.87 4.326-2.96-.924c-.643-.2-.658-.643.135-.953l11.56-4.456c.537-.2 1.006.133.832.936z"/></svg><span data-i18n="feedback"></span></a>
+</main>
+<main id="list" class="view"><div id="cards"></div></main>
+<main id="audio" class="view"><div id="acs"></div><button class="dl" id="dl"></button></main>
+
+<div class="ov" id="sheet"><div class="sh">
+<div class="rs"><span data-i18n="language"></span><div class="seg"><button data-lang="fa">فارسی</button><button data-lang="ar">العربية</button><button data-lang="en">English</button></div></div>
+<div class="rs"><span data-i18n="darkMode"></span><button class="sw" id="theme" role="switch" aria-checked="false"></button></div>
+<div class="rs"><span data-i18n="fontSize"></span><div class="step"><button id="fm">−</button><b id="fv"></b><button id="fp">+</button></div></div>
+<div class="rs"><span data-i18n="font"></span><div class="seg"><button data-font="Uthman"></button><button data-font="Lotus"></button><button data-font="Compset"></button></div></div>
+<div class="rs" id="inst" hidden><span data-i18n="installApp"></span><button class="pill" id="ib" data-i18n="install"></button></div>
+</div></div>
+<div class="ov c" id="modal"><div class="md"><h3 id="mt"></h3><p id="mm"></p><div id="mx"></div><div class="ma" id="ma"></div></div></div>
+<div class="ov c" id="first"><div class="md"><h3 id="ft"></h3><p id="fp2"></p><div class="ma"><button data-lang="fa">فارسی</button><button data-lang="ar">العربية</button><button data-lang="en">English</button></div></div></div>
+<div id="toast" role="status"></div>
+
 <script>
-const JSON_URL = 'https://raw.githubusercontent.com/ysrbkht/zikr/main/azkar.json';
-const AUDIO_URLS = [
-'https://raw.githubusercontent.com/ysrbkht/zikr/main/morning.mp3',
-'https://raw.githubusercontent.com/ysrbkht/zikr/main/evening.mp3'
-];
-
-// ✅ ۶ ساعت به میلی‌ثانیه
-const RESET_INTERVAL = 6 * 60 * 60 * 1000; // 21600000ms
-
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const JSON_URL='https://raw.githubusercontent.com/ysrbkht/zikr/main/azkar.json';
+const AUDIO_URLS=['https://raw.githubusercontent.com/ysrbkht/zikr/main/morning.mp3','https://raw.githubusercontent.com/ysrbkht/zikr/main/evening.mp3'];
+const RESET_INTERVAL=6*60*60*1000;
 const translations = {
 fa: {
 appName: 'اذکار', morningAdhkar: 'اذکار صبح', eveningAdhkar: 'اذکار شام', sleepAdhkar: 'اذکار خواب', audioAdhkar: 'اذکار صوتی',
@@ -311,401 +224,111 @@ selectLanguageMsg: 'Please choose your preferred language'
 }
 };
 
-let currentLanguage = null;
-let azkarData = null;
-let deferredPrompt;
-let isPlaying = { morning: false, evening: false };
-let progressIntervals = { morning: null, evening: null };
-
-// DOM elements
-const mainMenu = document.getElementById('mainMenu');
-const detailView = document.getElementById('detailView');
-const audioDetailView = document.getElementById('audioDetailView');
-const detailList = document.getElementById('detailList');
-const detailHeader = document.getElementById('detailHeader');
-const detailPageTitle = document.getElementById('detailPageTitle');
-const backBtn = document.getElementById('backBtn');
-const footer = document.getElementById('footer');
-const settingsIcon = document.getElementById('settingsIcon');
-const settingsPanel = document.getElementById('settingsPanel');
-const themeSwitchInner = document.getElementById('themeSwitchInner');
-const decreaseFont = document.getElementById('decreaseFont');
-const increaseFont = document.getElementById('increaseFont');
-const fontSizeValue = document.getElementById('fontSizeValue');
-const fontSelect = document.getElementById('fontSelect');
-const languageSelect = document.getElementById('languageSelect');
-const installBtn = document.getElementById('installBtn');
-const installContainer = document.getElementById('installButtonContainer');
-const audioMorning = document.getElementById('audioMorning');
-const audioEvening = document.getElementById('audioEvening');
-const playBtns = document.querySelectorAll('.custom-audio-player .play-btn');
-const progressBars = document.querySelectorAll('.progress-bar');
-const currentTimes = { morning: document.querySelector('[data-current="morning"]'), evening: document.querySelector('[data-current="evening"]') };
-const durationTimes = { morning: document.querySelector('[data-duration="morning"]'), evening: document.querySelector('[data-duration="evening"]') };
-const progressFills = { morning: document.querySelector('[data-fill="morning"]'), evening: document.querySelector('[data-fill="evening"]') };
-const customModal = document.getElementById('customModal');
-const modalTitle = document.getElementById('modalTitle');
-const modalMessage = document.getElementById('modalMessage');
-const modalActions = document.getElementById('modalActions');
-const downloadAudioBtn = document.getElementById('downloadAudioBtn');
-const progressModal = document.getElementById('progressModal');
-const progressFill = document.getElementById('progressFill');
-const progressPercent = document.getElementById('progressPercent');
-const progressDetail = document.getElementById('progressDetail');
-const progressTitle = document.getElementById('progressTitle');
-const cancelDownloadBtn = document.getElementById('cancelDownloadBtn');
-const languageModal = document.getElementById('languageModal');
-const languageModalTitle = document.getElementById('languageModalTitle');
-const languageModalMessage = document.getElementById('languageModalMessage');
-
-function formatTime(sec) { if (isNaN(sec)) return '00:00'; const m = Math.floor(sec/60), s = Math.floor(sec%60); return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
-function updateProgress(id) { const a = id==='morning'?audioMorning:audioEvening; const cur=a.currentTime, dur=a.duration; if(dur>0){ progressFills[id].style.width = (cur/dur)*100+'%'; currentTimes[id].textContent=formatTime(cur); } }
-function resetPlayer(id) { if(progressIntervals[id]) clearInterval(progressIntervals[id]); isPlaying[id]=false; const btn=document.querySelector(`[data-id="${id}"] i`); if(btn) btn.className='fas fa-play'; const a=id==='morning'?audioMorning:audioEvening; a.pause(); a.currentTime=0; progressFills[id].style.width='0%'; currentTimes[id].textContent='00:00'; durationTimes[id].textContent='00:00'; }
-function applyFontSize(s) { document.documentElement.style.setProperty('--selected-font-size', s+'rem'); fontSizeValue.textContent=s.toFixed(1); }
-function applyFontFamily(k) {
-let stack = k==='Uthman'?"'Uthman Taha', 'Lotus', 'Compset', 'Amiri', serif": k==='Lotus'?"'Lotus', 'Uthman Taha', 'Compset', 'Amiri', serif":"'Compset', 'Uthman Taha', 'Lotus', 'Amiri', serif";
-document.documentElement.style.setProperty('--selected-font', stack);
-}
-function setLanguage(lang) {
-currentLanguage = lang;
-document.documentElement.lang = lang;
-document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
-localStorage.setItem('language', lang);
-languageSelect.value = lang;
-document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.dataset.i18n; if(translations[lang][k]) el.textContent = translations[lang][k]; });
-document.getElementById('mainAppTitle').textContent = translations[lang].appName;
-if(detailView.style.display !== 'none') { const cat = detailPageTitle.dataset.category; if(cat && translations[lang][cat]) detailPageTitle.textContent = translations[lang][cat]; }
-else if(audioDetailView.style.display !== 'none') detailPageTitle.textContent = translations[lang].audioAdhkar;
-const fontOpts = fontSelect.querySelectorAll('option');
-fontOpts[0].textContent = translations[lang].fontUthman;
-fontOpts[1].textContent = translations[lang].fontLotus;
-fontOpts[2].textContent = translations[lang].fontCompset;
-if(downloadAudioBtn) downloadAudioBtn.innerHTML = `<i class="fas fa-download"></i> ${translations[lang].downloadAudio}`;
-}
-function showModal(title, msg, type='info', callback) {
-modalTitle.textContent = title;
-modalMessage.textContent = msg;
-const iconMap = { success: '<i class="fas fa-check-circle"></i>', error: '<i class="fas fa-exclamation-circle"></i>', info: '<i class="fas fa-info-circle"></i>' };
-document.getElementById('modalIcon').innerHTML = iconMap[type] || iconMap.info;
-modalActions.innerHTML = '';
-const okBtn = document.createElement('button'); okBtn.className = 'modal-btn primary'; okBtn.textContent = translations[currentLanguage].ok; okBtn.onclick = () => { customModal.classList.remove('show'); if(callback) callback(); };
-modalActions.appendChild(okBtn);
-customModal.classList.add('show');
-}
-function showConfirmModal(title, msg, onConfirm) {
-modalTitle.textContent = title;
-modalMessage.textContent = msg;
-document.getElementById('modalIcon').innerHTML = '<i class="fas fa-question-circle"></i>';
-modalActions.innerHTML = '';
-const cancelBtn = document.createElement('button');
-cancelBtn.className = 'modal-btn';
-cancelBtn.textContent = translations[currentLanguage].cancel;
-cancelBtn.onclick = () => customModal.classList.remove('show');
-const confirmBtn = document.createElement('button');
-confirmBtn.className = 'modal-btn primary';
-confirmBtn.textContent = translations[currentLanguage].confirm;
-confirmBtn.onclick = () => {
-customModal.classList.remove('show');
-onConfirm();
-};
-modalActions.appendChild(cancelBtn);
-modalActions.appendChild(confirmBtn);
-customModal.classList.add('show');
-}
-
-function getCountsKey(category) { return `adhkar_counts_${category}`; }
-function getTimestampKey(category) { return `adhkar_timestamp_${category}`; }
-
-function loadCounts(category, defaultCounts) {
-const stored = localStorage.getItem(getCountsKey(category));
-const timestamp = localStorage.getItem(getTimestampKey(category));
-const now = Date.now();
-if (timestamp) {
-const elapsed = now - parseInt(timestamp);
-if (elapsed >= RESET_INTERVAL) {
-localStorage.setItem(getTimestampKey(category), now.toString());
-localStorage.setItem(getCountsKey(category), JSON.stringify(defaultCounts));
-return [...defaultCounts];
-}
-}
-if (stored) {
-try {
-const arr = JSON.parse(stored);
-if (Array.isArray(arr) && arr.length === defaultCounts.length) return arr;
-} catch(e) {}
-}
-if (!timestamp) {
-localStorage.setItem(getTimestampKey(category), now.toString());
-}
-return [...defaultCounts];
-}
-
-function saveCounts(category, counts) {
-localStorage.setItem(getCountsKey(category), JSON.stringify(counts));
-localStorage.setItem(getTimestampKey(category), Date.now().toString());
-}
-
-function showCategory(cat, pushState=true) {
-if(cat === 'audio') {
-resetPlayer('morning'); resetPlayer('evening');
-mainMenu.style.display = 'none'; audioDetailView.style.display = 'flex'; detailView.style.display = 'none';
-footer.classList.add('hidden'); detailHeader.classList.add('active');
-detailPageTitle.textContent = translations[currentLanguage].audioAdhkar;
-detailPageTitle.dataset.category = 'audio';
-if(pushState) history.pushState({ page: 'detail', category: 'audio' }, '', '#audio');
-return;
-}
-if(!azkarData || !azkarData[cat]) {
-detailList.innerHTML = '<div style="text-align:center;padding:2rem;"><div class="loading-spinner"></div><p>'+translations[currentLanguage].loading+'</p></div>';
-return;
-}
-resetPlayer('morning'); resetPlayer('evening');
-detailPageTitle.textContent = translations[currentLanguage][cat] || cat;
-detailPageTitle.dataset.category = cat;
-detailHeader.classList.add('active');
-const items = azkarData[cat];
-const defaultCounts = items.map(item => item.repeat);
-let remainingCounts = loadCounts(cat, defaultCounts);
-let html = '';
-items.forEach((item, idx) => {
-let text = item.text;
-if(cat === 'sleep') {
-text = text.replace('دستان خود را جمع کنید و در آن بدمید و این سوره ها را بخوانید:', translations[currentLanguage].sleepStep1);
-text = text.replace('بعدا دستان خود را مسح کنید بر جسد خویش تا آنجاییکه توان دارید از سر و صورت خویش آغاز نمایید.(این کار را سه مرتبه تکرار نمایید)', translations[currentLanguage].sleepStep2);
-text = text.replace('سوره {الم سجدةِ} و {مُلك} را بخوانید', translations[currentLanguage].sleepSurah);
-}
-const remaining = remainingCounts[idx];
-const completed = remaining === 0;
-const badgeHtml = completed
-? `<span class="completed-badge"><i class="fas fa-check-circle"></i> ${translations[currentLanguage].completed}</span>`
-: `<button type="button" class="repeat-badge" data-idx="${idx}"><i class="fas fa-repeat"></i> ${remaining} ${translations[currentLanguage].remaining}</button>`;
-html += `<div class="dhikr-card" data-idx="${idx}">
-<div class="dhikr-text">${text}</div>
-<div class="dhikr-meta">
-<span class="reference"><i class="fas fa-book-open"></i> ${item.reference || translations[currentLanguage].source}</span>
-${badgeHtml}
-</div>
-</div>`;
-});
-detailList.innerHTML = html;
-document.querySelectorAll('.repeat-badge').forEach(badge => {
-badge.addEventListener('click', (e) => {
-e.stopPropagation();
-const idx = parseInt(badge.dataset.idx);
-if (remainingCounts[idx] > 0) {
-remainingCounts[idx]--;
-saveCounts(cat, remainingCounts);
-const card = badge.closest('.dhikr-card');
-const metaDiv = card.querySelector('.dhikr-meta');
-const newRemaining = remainingCounts[idx];
-if (newRemaining === 0) {
-const completedHtml = `<span class="completed-badge"><i class="fas fa-check-circle"></i> ${translations[currentLanguage].completed}</span>`;
-const referenceSpan = metaDiv.querySelector('.reference');
-metaDiv.innerHTML = (referenceSpan ? referenceSpan.outerHTML : '') + completedHtml;
-const completedBadge = metaDiv.querySelector('.completed-badge');
-if (completedBadge) {
-completedBadge.style.transform = 'scale(1.2)';
-setTimeout(() => { if(completedBadge) completedBadge.style.transform = ''; }, 200);
-}
-} else {
-badge.innerHTML = `<i class="fas fa-repeat"></i> ${newRemaining} ${translations[currentLanguage].remaining}`;
-badge.style.transform = 'scale(1.1)';
-setTimeout(() => { badge.style.transform = ''; }, 150);
-}
-}
-});
-});
-mainMenu.style.display = 'none'; detailView.style.display = 'flex'; audioDetailView.style.display = 'none';
-footer.classList.add('hidden');
-if(pushState) history.pushState({ page: 'detail', category: cat }, '', '#'+cat);
-}
-
-function showMainMenu() {
-resetPlayer('morning'); resetPlayer('evening');
-mainMenu.style.display = 'flex'; detailView.style.display = 'none'; audioDetailView.style.display = 'none';
-footer.classList.remove('hidden'); detailHeader.classList.remove('active');
-history.pushState({ page: 'main' }, '', location.pathname);
-}
-
-async function loadAzkar() {
-try {
-const r = await fetch(JSON_URL);
-if(!r.ok) throw new Error();
-azkarData = await r.json();
-}
-catch(e) {
-showModal('خطا', 'امکان بارگیری اذکار وجود ندارد. لطفا اتصال اینترنت را بررسی کنید.', 'error');
-}
-}
-
-let downloadCanceled = false;
-async function downloadAudioFilesWithProgress() {
-downloadCanceled = false;
-progressFill.style.width = '0%';
-progressPercent.textContent = '0%';
-progressDetail.textContent = `0 / ${AUDIO_URLS.length} ملف`;
-progressTitle.textContent = translations[currentLanguage].downloadAudio || 'جاري التحميل...';
-progressModal.classList.add('show');
-const cache = await caches.open('azkar-audio-v1');
-let completed = 0;
-for (let i = 0; i < AUDIO_URLS.length; i++) {
-if (downloadCanceled) break;
-const url = AUDIO_URLS[i];
-try {
-const response = await fetch(url);
-if (response.ok) {
-await cache.put(url, response);
-completed++;
-}
-} catch (e) { console.warn('Download failed', url); }
-const percent = Math.floor((completed / AUDIO_URLS.length) * 100);
-progressFill.style.width = percent + '%';
-progressPercent.textContent = percent + '%';
-progressDetail.textContent = `${completed} / ${AUDIO_URLS.length} ملف`;
-}
-progressModal.classList.remove('show');
-if (downloadCanceled) return;
-if (completed === AUDIO_URLS.length) {
-localStorage.setItem('audioCached', 'true');
-if (downloadAudioBtn) downloadAudioBtn.style.display = 'none';
-showModal(translations[currentLanguage].downloadSuccess, translations[currentLanguage].downloadSuccess, 'success');
-} else {
-showModal(translations[currentLanguage].downloadFailed, translations[currentLanguage].downloadFailed, 'error');
-}
-}
-
-function detectSystemLanguage() {
-const browserLang = navigator.language || navigator.userLanguage;
-if (browserLang.startsWith('fa')) return 'fa';
-if (browserLang.startsWith('ar')) return 'ar';
-return 'en';
-}
-
-function initSettings() {
-let darkMode = localStorage.getItem('darkMode');
-if (darkMode === null) {
-const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-darkMode = systemDark ? 'dark' : 'light';
-localStorage.setItem('darkMode', darkMode);
-}
-if (darkMode === 'dark') {
-document.body.classList.add('dark');
-themeSwitchInner.classList.add('active');
-} else {
-document.body.classList.remove('dark');
-themeSwitchInner.classList.remove('active');
-}
-let savedFontSize = localStorage.getItem('fontSize');
-if (savedFontSize === null) {
-savedFontSize = '1.5';
-localStorage.setItem('fontSize', '1.5');
-}
-applyFontSize(parseFloat(savedFontSize));
-let savedFont = localStorage.getItem('fontFamily');
-if (savedFont === null) {
-savedFont = 'Uthman';
-localStorage.setItem('fontFamily', 'Uthman');
-}
-fontSelect.value = savedFont;
-applyFontFamily(savedFont);
-if (localStorage.getItem('audioCached') === 'true' && downloadAudioBtn) {
-downloadAudioBtn.style.display = 'none';
-}
-}
-
-function showLanguageSelectionModal() {
-// اگر زبان قبلاً ذخیره شده باشد، مودال نمایش داده نشود
-if (localStorage.getItem('language')) return false;
-// تنظیم عنوان و پیام به زبان سیستم (برای مودال اولیه از انگلیسی یا عربی استفاده می‌کنیم)
-const sysLang = detectSystemLanguage();
-languageModalTitle.textContent = translations[sysLang].selectLanguage;
-languageModalMessage.textContent = translations[sysLang].selectLanguageMsg;
-languageModal.classList.add('show');
-return true;
-}
-
-// رویدادهای انتخاب زبان
-document.querySelectorAll('.lang-btn').forEach(btn => {
-btn.addEventListener('click', () => {
-const lang = btn.dataset.lang;
-setLanguage(lang);
-languageModal.classList.remove('show');
-// پس از انتخاب زبان، بارگذاری کامل برنامه را ادامه می‌دهیم
-loadAzkar().then(() => {
-showMainMenu();
-}).catch(() => {
-showMainMenu();
-});
-});
-});
-
-// شروع برنامه: ابتدا تنظیمات اولیه را بار می‌کنیم ولی زبان را اگر ذخیره نشده باشد تنظیم نمی‌کنیم
-initSettings();
-// بررسی نیاز به نمایش مودال انتخاب زبان
-const languageAlreadySet = localStorage.getItem('language') !== null;
-if (!languageAlreadySet) {
-// نمایش مودال انتخاب زبان
-showLanguageSelectionModal();
-} else {
-// زبان از قبل وجود دارد، آن را تنظیم کرده و برنامه را بارگذاری می‌کنیم
-currentLanguage = localStorage.getItem('language');
-setLanguage(currentLanguage);
-loadAzkar().then(() => {
-showMainMenu();
-}).catch(() => {
-showMainMenu();
-});
-}
-
-// رویدادهای دیگر (تنظیمات، پخش صوتی و ...) بعد از بارگذاری برنامه اضافه می‌شوند
-settingsIcon.onclick = (e) => { e.stopPropagation(); settingsPanel.classList.toggle('show'); };
-document.addEventListener('click', (e) => { if(!settingsPanel.contains(e.target) && !settingsIcon.contains(e.target)) settingsPanel.classList.remove('show'); });
-themeSwitchInner.onclick = () => {
-document.body.classList.toggle('dark');
-themeSwitchInner.classList.toggle('active');
-localStorage.setItem('darkMode', document.body.classList.contains('dark')?'dark':'light');
-};
-decreaseFont.onclick = () => { let s = Math.max(1.0, (parseFloat(fontSizeValue.textContent)||1.5)-0.1); applyFontSize(s); localStorage.setItem('fontSize', s.toFixed(1)); };
-increaseFont.onclick = () => { let s = Math.min(2.2, (parseFloat(fontSizeValue.textContent)||1.5)+0.1); applyFontSize(s); localStorage.setItem('fontSize', s.toFixed(1)); };
-fontSelect.onchange = (e) => { applyFontFamily(e.target.value); localStorage.setItem('fontFamily', e.target.value); };
-languageSelect.onchange = (e) => setLanguage(e.target.value);
-backBtn.onclick = () => history.back();
-window.onpopstate = (e) => { if(e.state && e.state.page==='detail') showCategory(e.state.category, false); else showMainMenu(); };
-document.querySelectorAll('.menu-card').forEach(c => c.addEventListener('click', () => showCategory(c.dataset.category, true)));
-
-playBtns.forEach(btn => btn.addEventListener('click', () => {
-const id = btn.dataset.id; const audio = id==='morning'?audioMorning:audioEvening; const icon = btn.querySelector('i');
-if(isPlaying[id]) { audio.pause(); icon.className = 'fas fa-play'; clearInterval(progressIntervals[id]); isPlaying[id]=false; }
-else { if(id==='morning' && isPlaying.evening) resetPlayer('evening'); if(id==='evening' && isPlaying.morning) resetPlayer('morning'); audio.play().catch(e=>console.log); icon.className='fas fa-pause'; progressIntervals[id]=setInterval(()=>updateProgress(id),100); isPlaying[id]=true; }
-}));
-audioMorning.addEventListener('loadedmetadata',()=>durationTimes.morning.textContent=formatTime(audioMorning.duration));
-audioEvening.addEventListener('loadedmetadata',()=>durationTimes.evening.textContent=formatTime(audioEvening.duration));
-audioMorning.addEventListener('ended',()=>resetPlayer('morning'));
-audioEvening.addEventListener('ended',()=>resetPlayer('evening'));
-progressBars.forEach(bar => bar.addEventListener('click', (e) => {
-const id = bar.dataset.progress; const audio = id==='morning'?audioMorning:audioEvening; if(audio.duration) { const rect=bar.getBoundingClientRect(); const percent=(e.clientX-rect.left)/rect.width; audio.currentTime=percent*audio.duration; updateProgress(id); }
-}));
-if (downloadAudioBtn) {
-downloadAudioBtn.addEventListener('click', () => {
-showConfirmModal(translations[currentLanguage].confirmDownloadTitle, translations[currentLanguage].confirmDownloadMsg, downloadAudioFilesWithProgress);
-});
-}
-if (cancelDownloadBtn) {
-cancelDownloadBtn.addEventListener('click', () => {
-downloadCanceled = true;
-progressModal.classList.remove('show');
-});
-}
-
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt=e; if(!localStorage.getItem('appInstalled') && !window.matchMedia('(display-mode: standalone)').matches) installContainer.style.display='flex'; });
-installBtn.onclick = async () => { if(!deferredPrompt) return; deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==='accepted') { localStorage.setItem('appInstalled','true'); installContainer.style.display='none'; } deferredPrompt=null; };
-if(localStorage.getItem('appInstalled') || window.matchMedia('(display-mode: standalone)').matches) installContainer.style.display='none';
-window.addEventListener('appinstalled', () => { localStorage.setItem('appInstalled','true'); installContainer.style.display='none'; });
-
-document.querySelectorAll('.menu-card').forEach(c => c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); c.click(); } }));
-new MutationObserver(() => document.getElementById('themeColor').content = document.body.classList.contains('dark') ? '#061a1c' : '#0e4a4f').observe(document.body, { attributes: true, attributeFilter: ['class'] });
-
-if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(e=>console.log);
+const X={
+fa:{greetMorning:'صبح بخیر',greetDay:'روز بخیر',greetEvening:'عصر بخیر',greetNight:'شب بخیر',now:'اکنون',allDone:'ماشاءالله، همهٔ اذکار تکمیل شد',errTitle:'خطا',errMsg:'بارگیری اذکار ممکن نشد. اتصال اینترنت را بررسی کنید.'},
+ar:{greetMorning:'صباح الخير',greetDay:'نهارك سعيد',greetEvening:'مساء الخير',greetNight:'تصبح على خير',now:'الآن',allDone:'ما شاء الله، اكتملت الأذكار',errTitle:'خطأ',errMsg:'تعذّر تحميل الأذكار. تحقق من اتصال الإنترنت.'},
+en:{greetMorning:'Good morning',greetDay:'Good afternoon',greetEvening:'Good evening',greetNight:'Good night',now:'Now',allDone:'All done. Well done!',errTitle:'Error',errMsg:"Couldn't load the adhkar. Check your connection."}};
+for(const l in X)Object.assign(translations[l],X[l]);
+const IC={sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',moon:'<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>',bed:'<path d="M3 18V6M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.5"/>',audio:'<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/>',gear:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',back:'<path d="M9 5l7 7-7 7"/>',play:'<path d="M8 5v14l11-7z" fill="currentColor"/>',pause:'<path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/>',check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',down:'<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>',book:'<path d="M12 6c-2-1.5-5-2-8-1.5V18c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V4.5C17 4 14 4.5 12 6zM12 6v13.5"/>'};
+const svg=(n)=>`<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg>`;
+const ring=(p,r=20)=>{const c=2*Math.PI*r;return `<svg class="ring" viewBox="0 0 48 48"><circle class="rb" cx="24" cy="24" r="${r}"/><circle class="rf" cx="24" cy="24" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-p)}"/></svg>`};
+const CATS=[['morning','morningAdhkar','sun'],['evening','eveningAdhkar','moon'],['sleep','sleepAdhkar','bed'],['audio','audioAdhkar','audio']];
+let currentLanguage='ar',data=null,view='home',cat='',items=[],counts=[],deferred;
+const T=k=>translations[currentLanguage][k]||k;
+const N=n=>(+n).toLocaleString(currentLanguage);
+const fmt=s=>isNaN(s)?'00:00':String(Math.floor(s/60)).padStart(2,'0')+':'+String(Math.floor(s%60)).padStart(2,'0');
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2600)}
+function dlg(title,msg,btns,extra=''){$('#mt').textContent=title;$('#mm').textContent=msg;$('#mx').innerHTML=extra;const a=$('#ma');a.innerHTML='';btns.forEach(([t,fn,p])=>{const b=document.createElement('button');b.textContent=t;b.className=p?'p':'';b.onclick=()=>{$('#modal').classList.remove('show');fn&&fn()};a.append(b)});$('#modal').classList.add('show')}
+/* storage (same keys as before) */
+const ck=c=>'adhkar_counts_'+c,tk=c=>'adhkar_timestamp_'+c;
+function loadCounts(c,def){const s=localStorage.getItem(ck(c)),t=localStorage.getItem(tk(c)),now=Date.now();
+if(t&&now-parseInt(t)>=RESET_INTERVAL){localStorage.setItem(tk(c),now);localStorage.setItem(ck(c),JSON.stringify(def));return[...def]}
+if(s){try{const a=JSON.parse(s);if(Array.isArray(a)&&a.length===def.length)return a}catch(e){}}
+if(!t)localStorage.setItem(tk(c),now);return[...def]}
+const prog=k=>{if(!data||!data[k])return[0,0];const it=data[k];return[loadCounts(k,it.map(x=>x.repeat)).filter(x=>!x).length,it.length]};
+/* sky */
+function sky(){const d=new Date(),h=d.getHours()+d.getMinutes()/60;
+const k=h>=4&&h<11?'morning':h>=11&&h<16?'day':h>=16&&h<19.5?'evening':'night';
+const sun=h>=5&&h<19,t=sun?(h-5)/14:((h>=19?h-19:h+5)/10);
+$('#hero').dataset.sky=k;$('#greet').textContent=T('greet'+k[0].toUpperCase()+k.slice(1));
+const o=$('#orb');o.classList.toggle('moon',!sun);
+requestAnimationFrame(()=>requestAnimationFrame(()=>{o.style.left=(14+72*t)+'%';o.style.top=(92-58*Math.sin(Math.PI*t))+'%'}))}
+function home(){view='home';show('home');$('#appTitle').textContent=T('appName');
+const h=new Date().getHours(),now=h>=4&&h<11?'morning':h>=15&&h<20?'evening':(h>=21||h<4)?'sleep':'';
+$('#rows').innerHTML=CATS.map(([k,t,i])=>{const au=k==='audio',[a,b]=au?[0,0]:prog(k);
+return `<button class="row" data-k="${k}"><span class="ic">${svg(i)}</span><span class="rt"><b>${T(t)}</b><small>${au||!b?'':N(a)+' / '+N(b)}</small></span>${k===now?`<em>${T('now')}</em>`:''}<span class="rg">${au?svg('play'):ring(b?a/b:0)}</span></button>`}).join('');
+$$('.row').forEach(r=>{if(r.dataset.k===now)r.classList.add('now');r.onclick=()=>openCat(r.dataset.k,true)})}
+function show(v){['home','list','audio'].forEach(x=>$('#'+x).classList.toggle('on',x===v));$('#bar').hidden=v==='home';scrollTo(0,0)}
+const cb=i=>{const r=counts[i],n=items[i].repeat;return r?`<span class="cb"><svg class="ring" viewBox="0 0 48 48"><circle class="rb" cx="24" cy="24" r="21"/><circle class="rf" cx="24" cy="24" r="21" stroke-dasharray="${2*Math.PI*21}" stroke-dashoffset="${2*Math.PI*21*(r/n)}"/></svg><b>${N(r)}</b></span>`:`<span class="cb ok">${svg('check')}</span>`};
+function upBar(){const d=counts.filter(x=>!x).length;$('#bc').textContent=N(d)+' / '+N(items.length);$('#bp').style.width=(d/items.length*100)+'%'}
+function openCat(k,push){
+if(k==='audio'){if(push)stopAll();view='audio';show('audio');$('#bt').textContent=T('audioAdhkar');$('#bc').textContent='';$('#bp').style.width=0;audioUI()}
+else{if(!data||!data[k])return;cat=k;items=data[k];counts=loadCounts(k,items.map(x=>x.repeat));view='list';
+$('#cards').innerHTML=items.map((it,i)=>{let text=it.text;
+if(cat==='sleep'){text = text.replace('دستان خود را جمع کنید و در آن بدمید و این سوره ها را بخوانید:', translations[currentLanguage].sleepStep1); text = text.replace('بعدا دستان خود را مسح کنید بر جسد خویش تا آنجاییکه توان دارید از سر و صورت خویش آغاز نمایید.(این کار را سه مرتبه تکرار نمایید)', translations[currentLanguage].sleepStep2); text = text.replace('سوره {الم سجدةِ} و {مُلك} را بخوانید', translations[currentLanguage].sleepSurah);}
+return `<article class="card${counts[i]?'':' done'}" data-i="${i}"><div class="tx">${text}</div><footer><span class="ref">${svg('book')}<span>${it.reference||T('source')}</span></span>${cb(i)}</footer></article>`}).join('');
+show('list');$('#bt').textContent=T(k);upBar()}
+if(push)history.pushState({k},'','#'+k)}
+$('#cards').onclick=e=>{const c=e.target.closest('.card');if(!c||String(getSelection()))return;const i=+c.dataset.i;if(!counts[i])return;
+counts[i]--;localStorage.setItem(ck(cat),JSON.stringify(counts));localStorage.setItem(tk(cat),Date.now());
+navigator.vibrate&&navigator.vibrate(counts[i]?8:[12,40,12]);
+c.querySelector('.cb').outerHTML=cb(i);c.querySelector('.cb').classList.add('pop');c.classList.toggle('done',!counts[i]);upBar();
+if(!counts[i]){const nx=$$('.card').find((x,j)=>j>i&&!x.classList.contains('done'));
+if(nx)setTimeout(()=>nx.scrollIntoView({behavior:'smooth',block:'center'}),350);
+else if(counts.every(x=>!x))toast(T('allDone'))}};
+/* audio */
+const AU={};
+function stopAll(){Object.values(AU).forEach(a=>{a.pause();a.currentTime=0})}
+function audioUI(){if(!$('#acs').children.length){
+$('#acs').innerHTML=['morning','evening'].map((k,n)=>`<div class="ac" data-k="${k}"><div class="at">${svg(n?'moon':'sun')}<span data-i18n="${k}Audio">${T(k+'Audio')}</span></div><div class="pr"><button class="pb" aria-label="play">${svg('play')}</button><div class="pa"><span class="tc">00:00</span><div class="bar2"><div><i></i></div></div><span class="td">00:00</span></div></div></div>`).join('');
+$$('.ac').forEach((p,n)=>{const k=p.dataset.k,a=new Audio();a.preload='none';a.src=AUDIO_URLS[n];AU[k]=a;
+const f=p.querySelector('i'),b=p.querySelector('.pb'),u=()=>{f.style.width=(a.duration?a.currentTime/a.duration*100:0)+'%';p.querySelector('.tc').textContent=fmt(a.currentTime);p.querySelector('.td').textContent=fmt(a.duration)};
+a.onloadedmetadata=a.ontimeupdate=u;a.onplay=()=>b.innerHTML=svg('pause');a.onpause=a.onended=()=>b.innerHTML=svg('play');
+b.onclick=()=>{if(a.paused){Object.values(AU).forEach(o=>o!==a&&o.pause());a.play().catch(()=>toast(T('downloadFailed')))}else a.pause()};
+p.querySelector('.bar2').onclick=e=>{if(!a.duration)return;const r=e.currentTarget.getBoundingClientRect();let x=(e.clientX-r.left)/r.width;if(document.documentElement.dir==='rtl')x=1-x;a.currentTime=Math.min(1,Math.max(0,x))*a.duration}})}
+$('#dl').innerHTML=svg('down')+`<span>${T('downloadAudio')}</span>`;$('#dl').hidden=localStorage.getItem('audioCached')==='true';
+$$('.ac [data-i18n]').forEach(e=>e.textContent=T(e.dataset.i18n))}
+$('#dl').onclick=()=>dlg(T('confirmDownloadTitle'),T('confirmDownloadMsg'),[[T('cancel')],[T('confirm'),download,1]]);
+async function download(){let stop=false;dlg(T('downloadAudio'),`0 / ${AUDIO_URLS.length}`,[[T('cancel'),()=>stop=true]],'<div class="pbar"><i id="pf"></i></div>');
+let n=0;try{const c=await caches.open('azkar-audio-v1');
+for(const u of AUDIO_URLS){if(stop)break;try{const r=await fetch(u);if(r.ok){await c.put(u,r);n++;$('#pf').style.width=n/AUDIO_URLS.length*100+'%';$('#mm').textContent=`${n} / ${AUDIO_URLS.length}`}}catch(e){}}}catch(e){}
+if(stop)return;$('#modal').classList.remove('show');
+if(n===AUDIO_URLS.length){localStorage.setItem('audioCached','true');$('#dl').hidden=true;toast(T('downloadSuccess'))}else dlg(T('downloadFailed'),T('downloadFailed'),[[T('ok'),0,1]])}
+/* language, theme, fonts */
+function setLang(l){currentLanguage=l;localStorage.setItem('language',l);const d=document.documentElement;d.lang=l;d.dir=l==='en'?'ltr':'rtl';
+$$('[data-i18n]').forEach(e=>e.textContent=T(e.dataset.i18n));$$('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));
+$$('[data-font]').forEach(b=>b.textContent=T('font'+b.dataset.font));
+sky();if(view==='home')home();else openCat(view==='audio'?'audio':cat,false)}
+function setTheme(d){document.body.classList.toggle('dark',d);$('#theme').setAttribute('aria-checked',d);$('#tcol').content=d?'#0a1220':'#eef3f2';localStorage.setItem('darkMode',d?'dark':'light')}
+function setSize(s){s=Math.min(2.2,Math.max(1,s));document.documentElement.style.setProperty('--selected-font-size',s+'rem');$('#fv').textContent=N(s.toFixed(1));localStorage.setItem('fontSize',s.toFixed(1));return s}
+function setFont(k){const s={Uthman:"'Uthman Taha','Lotus','Compset','Amiri',serif",Lotus:"'Lotus','Uthman Taha','Compset','Amiri',serif",Compset:"'Compset','Uthman Taha','Lotus','Amiri',serif"};
+document.documentElement.style.setProperty('--selected-font',s[k]||s.Uthman);$$('[data-font]').forEach(b=>b.classList.toggle('on',b.dataset.font===k));localStorage.setItem('fontFamily',k)}
+$('#gear').innerHTML=svg('gear');$('#back').innerHTML=svg('back');
+$('#gear').onclick=()=>$('#sheet').classList.add('show');
+$('#sheet').onclick=e=>{if(e.target.id==='sheet')e.currentTarget.classList.remove('show')};
+$('#theme').onclick=()=>setTheme(!document.body.classList.contains('dark'));
+let fs=parseFloat(localStorage.getItem('fontSize'))||1.5;
+$('#fm').onclick=()=>fs=setSize(fs-.1);$('#fp').onclick=()=>fs=setSize(fs+.1);
+$$('[data-font]').forEach(b=>b.onclick=()=>setFont(b.dataset.font));
+$$('[data-lang]').forEach(b=>b.onclick=()=>{const first=!data;setLang(b.dataset.lang);$('#first').classList.remove('show');if(first&&!booted)boot()});
+$('#back').onclick=()=>history.length>1?history.back():(stopAll(),home());
+onpopstate=e=>{stopAll();const k=e.state&&e.state.k;k?openCat(k,false):home()};
+/* install */
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(!localStorage.getItem('appInstalled')&&!matchMedia('(display-mode: standalone)').matches)$('#inst').hidden=false});
+$('#ib').onclick=async()=>{if(!deferred)return;deferred.prompt();const{outcome}=await deferred.userChoice;if(outcome==='accepted'){localStorage.setItem('appInstalled','true');$('#inst').hidden=true}deferred=null};
+addEventListener('appinstalled',()=>{localStorage.setItem('appInstalled','true');$('#inst').hidden=true});
+/* boot */
+let booted=false;
+async function boot(){booted=true;
+try{let r=await fetch(JSON_URL).catch(()=>null);if(!r||!r.ok)r=await fetch('azkar.json');data=await r.json()}
+catch(e){dlg(T('errTitle'),T('errMsg'),[[T('ok'),0,1]])}
+home();history.replaceState({},'',location.pathname)}
+setTheme((localStorage.getItem('darkMode')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))==='dark');
+fs=setSize(fs);setFont(localStorage.getItem('fontFamily')||'Uthman');
+const sl=localStorage.getItem('language');
+if(sl){setLang(sl);boot()}else{const b=navigator.language||'en',d=b.startsWith('fa')?'fa':b.startsWith('ar')?'ar':'en';
+setLang(d);localStorage.removeItem('language');$('#ft').textContent=T('selectLanguage');$('#fp2').textContent=T('selectLanguageMsg');$('#first').classList.add('show')}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
 </html>

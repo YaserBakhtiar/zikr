@@ -6,7 +6,7 @@ const urlsToCache = [
   './index.html',
   './manifest.json',
   'https://raw.githubusercontent.com/ysrbkht/zikr/main/azkar.json',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap',
   '/zikr/icon.png',
   '/zikr/icon.ico',
